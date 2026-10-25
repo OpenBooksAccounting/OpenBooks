@@ -1456,7 +1456,7 @@ __metadata:
     react-router-dom: "npm:^7.18.1"
     tailwindcss: "npm:^4"
     typescript: "npm:5.9.3"
-    vite: "npm:^8.1.5"
+    vite: "npm:^8.1.6"
   languageName: unknown
   linkType: soft
 
@@ -7710,7 +7710,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vite@npm:^6.0.0 || ^7.0.0 || ^8.0.0, vite@npm:^8.1.5":
+"vite@npm:^6.0.0 || ^7.0.0 || ^8.0.0":
   version: 8.1.5
   resolution: "vite@npm:8.1.5"
   dependencies:
@@ -7764,6 +7764,63 @@ __metadata:
   bin:
     vite: bin/vite.js
   checksum: 10/7278baa0723097a181566a46050f8218bb2c57c559cb68494709b6eb9a9eb332bfbc8fb3638857300eeaedbae37343e131e323da9ebda157e5f9ccfc48eefe02
+  languageName: node
+  linkType: hard
+
+"vite@npm:^8.1.6":
+  version: 8.1.6
+  resolution: "vite@npm:8.1.6"
+  dependencies:
+    fsevents: "npm:~2.3.3"
+    lightningcss: "npm:^1.32.0"
+    picomatch: "npm:^4.0.5"
+    postcss: "npm:^8.5.17"
+    rolldown: "npm:~1.1.5"
+    tinyglobby: "npm:^0.2.17"
+  peerDependencies:
+    "@types/node": ^20.19.0 || >=22.12.0
+    "@vitejs/devtools": ^0.3.0
+    esbuild: ^0.27.0 || ^0.28.0
+    jiti: ">=1.21.0"
+    less: ^4.0.0
+    sass: ^1.70.0
+    sass-embedded: ^1.70.0
+    stylus: ">=0.54.8"
+    sugarss: ^5.0.0
+    terser: ^5.16.0
+    tsx: ^4.8.1
+    yaml: ^2.4.2
+  dependenciesMeta:
+    fsevents:
+      optional: true
+  peerDependenciesMeta:
+    "@types/node":
+      optional: true
+    "@vitejs/devtools":
+      optional: true
+    esbuild:
+      optional: true
+    jiti:
+      optional: true
+    less:
+      optional: true
+    sass:
+      optional: true
+    sass-embedded:
+      optional: true
+    stylus:
+      optional: true
+    sugarss:
+      optional: true
+    terser:
+      optional: true
+    tsx:
+      optional: true
+    yaml:
+      optional: true
+  bin:
+    vite: bin/vite.js
+  checksum: 10/2cacd2daa785b39462c2fcf12a8b8bd162d4d01a88f9a75425aa42dbc27a30fa8c20719026210704a6190785c2a2bcc9f6bf6f48d4d60440870dfc517f17ab55
   languageName: node
   linkType: hard
 
