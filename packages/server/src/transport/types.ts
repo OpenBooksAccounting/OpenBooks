@@ -1,8 +1,12 @@
 import type {
+  ContextConfigDefault,
   FastifyInstance,
+  FastifySchema,
+  onRequestHookHandler,
   RawReplyDefaultExpression,
   RawRequestDefaultExpression,
   RawServerDefault,
+  RouteGenericInterface,
 } from 'fastify';
 import type { ZodTypeProvider } from 'fastify-type-provider-zod';
 
@@ -33,4 +37,25 @@ export type App = FastifyInstance<
   RawReplyDefaultExpression,
   Logger,
   ZodTypeProvider
+>;
+
+/**
+ * An `onRequest` hook shared across `App` routes.
+ *
+ * A bare `onRequestHookHandler` defaults its `this` to a `FastifyInstance` over
+ * `FastifyBaseLogger` and the default type provider. From fastify 5.12 a route on an
+ * `App` refuses that: the two instances are compared through `childLoggerFactory`,
+ * which is contravariant in the logger, and `FastifyBaseLogger` lacks pino's
+ * `msgPrefix`. Pinning the logger and provider to the `App`'s own keeps a shared hook
+ * assignable to every route's `onRequest`.
+ */
+export type AppOnRequestHook = onRequestHookHandler<
+  RawServerDefault,
+  RawRequestDefaultExpression,
+  RawReplyDefaultExpression,
+  RouteGenericInterface,
+  ContextConfigDefault,
+  FastifySchema,
+  ZodTypeProvider,
+  Logger
 >;

@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import { pageQueryShape, pageSchema } from '../wire';
+import { pageQueryShape, pageSchema, whenNoPriorIssues } from '../wire';
 
 /**
  * Bank accounts (OB-075, for OB-076; ROADMAP D-41, D-46).
@@ -216,6 +216,7 @@ export const updateBankAccountRequestSchema = z
   })
   .refine((input) => Object.values(input).some((value) => value !== undefined), {
     message: 'Supply at least one field to change.',
+    when: whenNoPriorIssues,
   })
   .meta({
     id: 'UpdateBankAccountRequest',

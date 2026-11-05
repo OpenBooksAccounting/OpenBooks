@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import { calendarDateSchema, minorUnitsSchema } from '../wire';
+import { calendarDateSchema, minorUnitsSchema, whenNoPriorIssues } from '../wire';
 import { documentMemoSchema, documentReferenceSchema } from '../subledger/documents';
 
 /**
@@ -143,6 +143,7 @@ export const updatePendingPaymentRequestSchema = z
   })
   .refine((input) => Object.values(input).some((value) => value !== undefined), {
     message: 'Supply at least one field to change.',
+    when: whenNoPriorIssues,
   })
   .meta({
     id: 'UpdatePendingPaymentRequest',
@@ -415,6 +416,7 @@ export const updateVendorDisbursementDetailsRequestSchema = z
   })
   .refine((input) => Object.keys(input).length > 0, {
     message: 'Supply at least one field to change.',
+    when: whenNoPriorIssues,
   })
   .meta({
     id: 'UpdateVendorDisbursementDetailsRequest',

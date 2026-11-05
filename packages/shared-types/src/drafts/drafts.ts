@@ -2,7 +2,13 @@ import { z } from 'zod';
 
 import { MAX_DIMENSIONS_PER_ORG } from '../dimensions';
 import { JOURNAL_SIDES, journalEntryTypeSchema } from '../journals';
-import { calendarDateSchema, minorUnitsSchema, pageQueryShape, pageSchema } from '../wire';
+import {
+  calendarDateSchema,
+  minorUnitsSchema,
+  pageQueryShape,
+  pageSchema,
+  whenNoPriorIssues,
+} from '../wire';
 
 /**
  * The journal-draft wire contract (OB-038; ROADMAP D-16, D-19).
@@ -306,6 +312,7 @@ export const updateDraftRequestSchema = z
   })
   .refine((input) => Object.values(input).some((value) => value !== undefined), {
     message: 'Supply at least one field to change.',
+    when: whenNoPriorIssues,
   })
   .meta({
     id: 'UpdateDraftRequest',

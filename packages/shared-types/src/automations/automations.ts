@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 import { createDraftRequestSchema } from '../drafts/drafts';
-import { calendarDateSchema, pageQueryShape, pageSchema } from '../wire';
+import { calendarDateSchema, pageQueryShape, pageSchema, whenNoPriorIssues } from '../wire';
 
 /**
  * Automations — agent work queue, MCP-only (initiative Q, M6; OB-200…210; ROADMAP
@@ -138,6 +138,7 @@ export const updateAutomationRequestSchema = z
   })
   .refine((input) => Object.values(input).some((value) => value !== undefined), {
     message: 'Supply at least one field to change.',
+    when: whenNoPriorIssues,
   })
   .meta({
     id: 'UpdateAutomationRequest',

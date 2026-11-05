@@ -19,3 +19,8 @@ export {
   pageQueryShape,
   pageSchema,
 } from './pagination';
+/**
+ * The guard that keeps a PATCH schema's at-least-one-field check from firing after a
+ * forbidden key has already been reported. Read `patch.ts` for the Zod 4.6 change.
+ */
+export { whenNoPriorIssues } from './patch';

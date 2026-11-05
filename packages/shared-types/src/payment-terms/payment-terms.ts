@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import { calendarDateSchema } from '../wire';
+import { calendarDateSchema, whenNoPriorIssues } from '../wire';
 
 /**
  * Payment terms (initiative I, Cash application; ROADMAP D-79, D-107).
@@ -192,6 +192,7 @@ export const updatePaymentTermRequestSchema = z
   })
   .refine((input) => Object.values(input).some((value) => value !== undefined), {
     message: 'Supply at least one field to change.',
+    when: whenNoPriorIssues,
   })
   .refine(
     (input) => (input.discountRatePpm === undefined) === (input.discountWindowDays === undefined),

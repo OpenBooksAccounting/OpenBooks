@@ -2,7 +2,7 @@ import { z } from 'zod';
 
 import { inventoryCostingMethodSchema, inventoryItemTypeSchema } from '../inventory';
 import { quantitySchema } from '../subledger';
-import { minorUnitsSchema, pageQueryShape, pageSchema } from '../wire';
+import { minorUnitsSchema, pageQueryShape, pageSchema, whenNoPriorIssues } from '../wire';
 
 /**
  * Request and response schemas for the item catalog (initiative CAT; ROADMAP
@@ -223,6 +223,7 @@ export const updateCatalogItemRequestSchema = z
   })
   .refine((input) => Object.values(input).some((value) => value !== undefined), {
     message: 'Supply at least one field to change.',
+    when: whenNoPriorIssues,
   })
   .meta({
     id: 'UpdateCatalogItemRequest',

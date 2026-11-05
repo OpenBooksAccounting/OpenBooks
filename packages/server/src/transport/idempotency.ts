@@ -50,9 +50,10 @@
  * on the first execution and on every replay, which is the property that makes a
  * retry indistinguishable from the original.
  */
-import type { FastifyRequest, onRequestHookHandler } from 'fastify';
+import type { FastifyRequest } from 'fastify';
 
 import { ValidationError } from '../errors';
+import type { AppOnRequestHook } from './types';
 
 export const IDEMPOTENCY_KEY_HEADER = 'idempotency-key';
 
@@ -119,11 +120,7 @@ export function readIdempotencyKey(request: FastifyRequest): string | null {
  * instance that has not opened a context. Both paths go through
  * `readIdempotencyKey`, so they cannot disagree about what is present.
  */
-export const requireIdempotencyKey: onRequestHookHandler = function requireKey(
-  request,
-  _reply,
-  done,
-) {
+export const requireIdempotencyKey: AppOnRequestHook = function requireKey(request, _reply, done) {
   if (readIdempotencyKey(request) === null) {
     throw new ValidationError(
       'This endpoint requires an Idempotency-Key header (spec §12). Send one unique value ' +

@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 import { MAX_DIMENSIONS_PER_ORG } from '../dimensions';
-import { minorUnitsSchema, pageQueryShape, pageSchema } from '../wire';
+import { minorUnitsSchema, pageQueryShape, pageSchema, whenNoPriorIssues } from '../wire';
 
 import { bankLineDirectionSchema } from './banking';
 
@@ -240,6 +240,7 @@ export const updateBankRuleRequestSchema = z
   })
   .refine((input) => Object.values(input).some((value) => value !== undefined), {
     message: 'Supply at least one field to change.',
+    when: whenNoPriorIssues,
   })
   .meta({
     id: 'UpdateBankRuleRequest',

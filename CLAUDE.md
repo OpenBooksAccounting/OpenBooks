@@ -311,6 +311,13 @@ each to the mistake + the fix.
   at ~110-120, a _different_ interface than the reader expected. When a doc points at `file:line`,
   confirm by searching for the named symbol/comment; the line has usually drifted. When _writing_ such
   citations, prefer `symbol @ path:line` (the roadmap's own convention) so a stale number still resolves.
+- **Whole-repo `eslint .` now OOMs even at `--max-old-space-size=8192`** (2026-11-05, after the fastify 5.12 /
+  Zod 4.6 bump). Lint **one workspace per process** instead — `node --max-old-space-size=8192
+node_modules/eslint/bin/eslint.js packages/<w>` for each of `packages/*` plus `scripts` and the root `*.{js,mjs,cjs}`;
+  each run stays under the heap and together they cover every tracked source file.
+- **Don't chain gate steps with `( set -e; a; b; … )` in zsh** — it did not stop on a failing `yarn typecheck`, ran
+  every later step, and the subshell exited `0` over 298 type errors and 3 test failures. Chain with `&&` and append
+  `echo EXIT=$?` to the log, then read the log.
 - **For a scope/plan deliverable, fan out read-only `Explore` agents to pin seams _before_ writing —
   this worked; make it the default.** Two disjoint Explore agents (adapter/schema vs posting/draft/
   config) returned exact `file:line` shapes in parallel while the orchestrator studied house style,

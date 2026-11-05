@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import { pageQueryShape, pageSchema } from '../wire';
+import { pageQueryShape, pageSchema, whenNoPriorIssues } from '../wire';
 
 /**
  * Request and response schemas for contacts (OB-036; spec §3).
@@ -314,6 +314,7 @@ export const updateContactRequestSchema = z
   })
   .refine((input) => Object.values(input).some((value) => value !== undefined), {
     message: 'Supply at least one field to change.',
+    when: whenNoPriorIssues,
   })
   .meta({
     id: 'UpdateContactRequest',

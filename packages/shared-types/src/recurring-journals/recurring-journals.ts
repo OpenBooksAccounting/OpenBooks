@@ -1,7 +1,13 @@
 import { z } from 'zod';
 
 import { JOURNAL_SIDES } from '../journals';
-import { calendarDateSchema, minorUnitsSchema, pageQueryShape, pageSchema } from '../wire';
+import {
+  calendarDateSchema,
+  minorUnitsSchema,
+  pageQueryShape,
+  pageSchema,
+  whenNoPriorIssues,
+} from '../wire';
 
 /**
  * Recurring journal templates (initiative L, OB-162; ROADMAP D-90, D-113…D-117, for
@@ -168,12 +174,15 @@ export const updateRecurringJournalTemplateRequestSchema = z
     lines: z.array(recurringJournalLineSchema).optional(),
     isActive: z.boolean().optional(),
   })
-  .superRefine((value, ctx) => {
-    if (value.lines !== undefined) assertBalancedLines(value.lines, ctx);
-    if (!Object.values(value).some((field) => field !== undefined)) {
-      ctx.addIssue({ code: 'custom', message: 'Supply at least one field to change.' });
-    }
-  })
+  .superRefine(
+    (value, ctx) => {
+      if (value.lines !== undefined) assertBalancedLines(value.lines, ctx);
+      if (!Object.values(value).some((field) => field !== undefined)) {
+        ctx.addIssue({ code: 'custom', message: 'Supply at least one field to change.' });
+      }
+    },
+    { when: whenNoPriorIssues },
+  )
   .meta({
     id: 'UpdateRecurringJournalTemplateRequest',
     description:

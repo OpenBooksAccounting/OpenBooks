@@ -1,5 +1,7 @@
 import { z } from 'zod';
 
+import { whenNoPriorIssues } from '../wire';
+
 /**
  * Org branding — the letterhead an invoice is printed under (OB-123, Phase 1).
  *
@@ -218,6 +220,7 @@ export const updateOrgBrandingRequestSchema = z
   })
   .refine((input) => Object.values(input).some((value) => value !== undefined), {
     message: 'Supply at least one field to change.',
+    when: whenNoPriorIssues,
   })
   .meta({
     description:

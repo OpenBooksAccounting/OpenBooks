@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 import { MoneyParseError } from '../money';
-import { pageQueryShape, pageSchema } from '../wire';
+import { pageQueryShape, pageSchema, whenNoPriorIssues } from '../wire';
 
 import { TAX_RATE_PERCENT_DECIMALS, taxRateFromPercentString } from './rate';
 
@@ -201,6 +201,7 @@ export const updateTaxRateRequestSchema = z
   })
   .refine((input) => Object.values(input).some((value) => value !== undefined), {
     message: 'Supply at least one field to change.',
+    when: whenNoPriorIssues,
   })
   .meta({
     id: 'UpdateTaxRateRequest',

@@ -1,6 +1,12 @@
 import { z } from 'zod';
 
-import { calendarDateSchema, minorUnitsSchema, pageQueryShape, pageSchema } from '../wire';
+import {
+  calendarDateSchema,
+  minorUnitsSchema,
+  pageQueryShape,
+  pageSchema,
+  whenNoPriorIssues,
+} from '../wire';
 
 import {
   DOCUMENT_MAX_LINES,
@@ -152,6 +158,7 @@ export const updateEstimateRequestSchema = z
   })
   .refine((input) => Object.values(input).some((value) => value !== undefined), {
     message: 'Supply at least one field to change.',
+    when: whenNoPriorIssues,
   })
   .meta({
     id: 'UpdateEstimateRequest',

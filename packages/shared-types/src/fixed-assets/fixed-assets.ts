@@ -1,7 +1,13 @@
 import { z } from 'zod';
 
 import { compare, fromMinorString, isNegative, isPositive } from '../money';
-import { calendarDateSchema, minorUnitsSchema, pageCursorSchema, pageQueryShape } from '../wire';
+import {
+  calendarDateSchema,
+  minorUnitsSchema,
+  pageCursorSchema,
+  pageQueryShape,
+  whenNoPriorIssues,
+} from '../wire';
 
 /**
  * Fixed assets: the register, its precomputed depreciation schedule, and disposal
@@ -226,6 +232,7 @@ export const updateFixedAssetRequestSchema = z
   })
   .refine((input) => Object.values(input).some((value) => value !== undefined), {
     message: 'Supply at least one field to change.',
+    when: whenNoPriorIssues,
   })
   .meta({
     id: 'UpdateFixedAssetRequest',
@@ -448,6 +455,7 @@ export const updateDepreciationAccountsRequestSchema = z
   })
   .refine((input) => Object.values(input).some((value) => value !== undefined), {
     message: 'Supply at least one field to change.',
+    when: whenNoPriorIssues,
   })
   .meta({
     id: 'UpdateDepreciationAccountsRequest',

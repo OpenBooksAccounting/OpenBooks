@@ -1,5 +1,7 @@
 import { z } from 'zod';
 
+import { whenNoPriorIssues } from '../wire';
+
 /**
  * The org's accounting settings (OB-066a; ROADMAP D-23, D-34, D-40).
  *
@@ -113,6 +115,7 @@ export const updateControlAccountsRequestSchema = z
   })
   .refine((input) => Object.values(input).some((value) => value !== undefined), {
     message: 'Supply at least one field to change.',
+    when: whenNoPriorIssues,
   })
   .meta({
     id: 'UpdateControlAccountsRequest',
@@ -180,6 +183,7 @@ export const updateDiscountAccountsRequestSchema = z
   })
   .refine((input) => Object.values(input).some((value) => value !== undefined), {
     message: 'Supply at least one field to change.',
+    when: whenNoPriorIssues,
   })
   .meta({
     id: 'UpdateDiscountAccountsRequest',

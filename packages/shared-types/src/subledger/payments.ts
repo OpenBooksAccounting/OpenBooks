@@ -1,6 +1,12 @@
 import { z } from 'zod';
 
-import { calendarDateSchema, minorUnitsSchema, pageQueryShape, pageSchema } from '../wire';
+import {
+  calendarDateSchema,
+  minorUnitsSchema,
+  pageQueryShape,
+  pageSchema,
+  whenNoPriorIssues,
+} from '../wire';
 
 import { allocationInputSchema, allocationSchema } from './allocations';
 import {
@@ -218,6 +224,7 @@ export const updatePaymentRequestSchema = z
   })
   .refine((input) => Object.values(input).some((value) => value !== undefined), {
     message: 'Supply at least one field to change.',
+    when: whenNoPriorIssues,
   })
   .meta({
     id: 'UpdatePaymentRequest',

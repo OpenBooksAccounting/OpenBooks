@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import { pageQueryShape, pageSchema } from '../wire';
+import { pageQueryShape, pageSchema, whenNoPriorIssues } from '../wire';
 
 /**
  * Request and response schemas for dimensions — the user-defined reporting axes
@@ -233,6 +233,7 @@ export const updateDimensionRequestSchema = z
   })
   .refine((input) => Object.values(input).some((value) => value !== undefined), {
     message: 'Supply at least one field to change.',
+    when: whenNoPriorIssues,
   })
   .meta({
     id: 'UpdateDimensionRequest',

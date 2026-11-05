@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import { pageQueryShape, pageSchema } from '../wire';
+import { pageQueryShape, pageSchema, whenNoPriorIssues } from '../wire';
 
 /**
  * Request and response schemas for the chart of accounts (OB-018).
@@ -300,6 +300,7 @@ export const updateAccountRequestSchema = z
   })
   .refine((input) => Object.values(input).some((value) => value !== undefined), {
     message: 'Supply at least one field to change.',
+    when: whenNoPriorIssues,
   })
   .meta({
     id: 'UpdateAccountRequest',

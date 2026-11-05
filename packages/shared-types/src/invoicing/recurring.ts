@@ -6,7 +6,13 @@ import {
   quantitySchema,
   taxModeSchema,
 } from '../subledger/documents';
-import { calendarDateSchema, minorUnitsSchema, pageQueryShape, pageSchema } from '../wire';
+import {
+  calendarDateSchema,
+  minorUnitsSchema,
+  pageQueryShape,
+  pageSchema,
+  whenNoPriorIssues,
+} from '../wire';
 
 /**
  * Recurring invoice templates (OB-128; ROADMAP D-75, D-76, for `0008_recurring_dunning`).
@@ -161,6 +167,7 @@ export const updateRecurringInvoiceTemplateRequestSchema = z
   })
   .refine((input) => Object.values(input).some((value) => value !== undefined), {
     message: 'Supply at least one field to change.',
+    when: whenNoPriorIssues,
   })
   .meta({
     id: 'UpdateRecurringInvoiceTemplateRequest',

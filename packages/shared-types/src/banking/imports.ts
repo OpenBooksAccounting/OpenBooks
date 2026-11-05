@@ -1,6 +1,12 @@
 import { z } from 'zod';
 
-import { calendarDateSchema, minorUnitsSchema, pageQueryShape, pageSchema } from '../wire';
+import {
+  calendarDateSchema,
+  minorUnitsSchema,
+  pageQueryShape,
+  pageSchema,
+  whenNoPriorIssues,
+} from '../wire';
 
 import { bankStatementLineDraftSchema } from './statement-lines';
 
@@ -292,6 +298,7 @@ export const updateBankImportMappingRequestSchema = z
   })
   .refine((input) => Object.values(input).some((value) => value !== undefined), {
     message: 'Supply at least one field to change.',
+    when: whenNoPriorIssues,
   });
 
 export type UpdateBankImportMappingRequest = z.infer<typeof updateBankImportMappingRequestSchema>;

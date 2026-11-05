@@ -1,5 +1,4 @@
 import { PAGE_SIZE_DEFAULT, PAGE_SIZE_MAX } from '@openbooks/shared-types';
-import type { onRequestHookHandler } from 'fastify';
 import { z } from 'zod';
 
 import { getContext, isAuthenticatedContext } from '../../context';
@@ -7,6 +6,7 @@ import { UnauthenticatedError } from '../../errors';
 import type { IdempotentResult } from '../../modules/idempotency';
 import { IDEMPOTENCY_KEY_HEADER, requireIdempotencyKey } from '../idempotency';
 import { errorResponseSchema } from '../schemas';
+import type { AppOnRequestHook } from '../types';
 
 /**
  * The pieces every route file in this directory needs, and nothing else.
@@ -48,11 +48,7 @@ import { errorResponseSchema } from '../schemas';
  * `requireIdempotencyKey`: a request that cannot be authorized should not have its
  * body read.
  */
-export const requireOrgScope: onRequestHookHandler = function requireOrgScope(
-  _request,
-  _reply,
-  done,
-) {
+export const requireOrgScope: AppOnRequestHook = function requireOrgScope(_request, _reply, done) {
   if (!isAuthenticatedContext(getContext('requireOrgScope()'))) {
     throw new UnauthenticatedError();
   }
@@ -70,10 +66,7 @@ export const requireOrgScope: onRequestHookHandler = function requireOrgScope(
  * on who is asking — and it is what lets one test prove the rule for every write route
  * in the table without a session.
  */
-export const ORG_SCOPED_WRITE_HOOKS: onRequestHookHandler[] = [
-  requireIdempotencyKey,
-  requireOrgScope,
-];
+export const ORG_SCOPED_WRITE_HOOKS: AppOnRequestHook[] = [requireIdempotencyKey, requireOrgScope];
 
 /**
  * The `Idempotency-Key` header, declared so it appears in the published artifact.

@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import { calendarDateSchema, pageQueryShape } from '../wire';
+import { calendarDateSchema, pageQueryShape, whenNoPriorIssues } from '../wire';
 
 import {
   DOCUMENT_MAX_LINES,
@@ -89,6 +89,7 @@ export const updateExpenseRequestSchema = z
   })
   .refine((input) => Object.values(input).some((value) => value !== undefined), {
     message: 'Supply at least one field to change.',
+    when: whenNoPriorIssues,
   })
   .meta({
     id: 'UpdateExpenseRequest',
